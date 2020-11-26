@@ -1,6 +1,7 @@
 import streamlit as st
 import numpy as np
 import pickle
+from sklearn.ensemble import RandomForestRegressor
 
 st.markdown(
     """
@@ -67,7 +68,7 @@ button.streamlit-button.small-button.primary-button:hover {
 }
 button.streamlit-button.xsmall-button.primary-button:hover {
     color: black;
-    border: 1px solid #000000;    
+    border: 1px solid #000000;
 }
 .streamlit-button.primary-button:focus:not(:active) {
     border-color: black;
@@ -77,9 +78,9 @@ button.streamlit-button.xsmall-button.primary-button:hover {
     box-shadow: none;
     outline: none;
 }
-button.streamlit-button.small-button.primary-button:active { 
-            transform: scale(0.98);  
-            box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24); 
+button.streamlit-button.small-button.primary-button:active {
+            transform: scale(0.98);
+            box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24);
 }
 .fixed-width.stText {
     font-size: 24px;
@@ -110,7 +111,7 @@ feat_popu = st.sidebar.number_input('Population (Example: 1000000)', min_value=i
 feat_area = st.sidebar.slider('Area (sq. Km)', min_value=0, max_value=int(17e6), value=int(10e5), step=int(1e3))
 feat_dens = st.sidebar.slider('Population Density (per sq. Km)', min_value=0, max_value=12000, value=2500, step=10)
 feat_cost = st.sidebar.slider('Coastline/Area Ratio', min_value=0, max_value=900, value=300, step=1)
-feat_migr = st.sidebar.slider('Annual Net Migration (per 1000 people)', min_value=-21, max_value=25, value=5, step=1) 
+feat_migr = st.sidebar.slider('Annual Net Migration (per 1000 people)', min_value=-21, max_value=25, value=5, step=1)
 feat_mort = st.sidebar.slider('Infant Mortality (per 1000 births)', min_value=0, max_value=195, value=40, step=1)
 feat_litr = st.sidebar.slider('Population Literacy (%)', min_value=0, max_value=100, value=80, step=1)
 feat_phon = st.sidebar.slider('Phones (per 1000 people)', min_value=0, max_value=1050, value=250, step=1)
@@ -139,50 +140,50 @@ feat_regn = st.sidebar.selectbox('Region', options=(1,2,3,4,5,6,7,8,9,10,11), in
 
 if feat_regn == 1:
     feat_regn_2 = feat_regn_3 = feat_regn_4 = feat_regn_5 = feat_regn_6 = feat_regn_7 = feat_regn_8 = feat_regn_9 = feat_regn_10 = feat_regn_11 = 0
-elif feat_regn == 2: 
+elif feat_regn == 2:
     feat_regn_2 = 1
     feat_regn_3 = feat_regn_4 = feat_regn_5 = feat_regn_6 = feat_regn_7 = feat_regn_8 = feat_regn_9 = feat_regn_10 = feat_regn_11 = 0
-elif feat_regn == 3: 
+elif feat_regn == 3:
     feat_regn_3 = 1
     feat_regn_2 = feat_regn_4 = feat_regn_5 = feat_regn_6 = feat_regn_7 = feat_regn_8 = feat_regn_9 = feat_regn_10 = feat_regn_11 = 0
-elif feat_regn == 4: 
+elif feat_regn == 4:
     feat_regn_4 = 1
     feat_regn_2 = feat_regn_3 = feat_regn_5 = feat_regn_6 = feat_regn_7 = feat_regn_8 = feat_regn_9 = feat_regn_10 = feat_regn_11 = 0
-elif feat_regn == 5: 
+elif feat_regn == 5:
     feat_regn_5 = 1
     feat_regn_2 = feat_regn_3 = feat_regn_4 = feat_regn_6 = feat_regn_7 = feat_regn_8 = feat_regn_9 = feat_regn_10 = feat_regn_11 = 0
-elif feat_regn == 6: 
+elif feat_regn == 6:
     feat_regn_6 = 1
     feat_regn_2 = feat_regn_3 = feat_regn_4 = feat_regn_5 = feat_regn_7 = feat_regn_8 = feat_regn_9 = feat_regn_10 = feat_regn_11 = 0
-elif feat_regn == 7: 
+elif feat_regn == 7:
     feat_regn_7 = 1
     feat_regn_2 = feat_regn_3 = feat_regn_4 = feat_regn_5 = feat_regn_6 = feat_regn_8 = feat_regn_9 = feat_regn_10 = feat_regn_11 = 0
-elif feat_regn == 8: 
+elif feat_regn == 8:
     feat_regn_8 = 1
     feat_regn_2 = feat_regn_3 = feat_regn_4 = feat_regn_5 = feat_regn_6 = feat_regn_7 = feat_regn_9 = feat_regn_10 = feat_regn_11 = 0
-elif feat_regn == 9: 
+elif feat_regn == 9:
     feat_regn_9 = 1
     feat_regn_2 = feat_regn_3 = feat_regn_4 = feat_regn_5 = feat_regn_6 = feat_regn_7 = feat_regn_8 = feat_regn_10 = feat_regn_11 = 0
-elif feat_regn == 10: 
+elif feat_regn == 10:
     feat_regn_10 = 1
     feat_regn_2 = feat_regn_3 = feat_regn_4 = feat_regn_5 = feat_regn_6 = feat_regn_7 = feat_regn_8 = feat_regn_9 = feat_regn_11 = 0
-else: 
+else:
     feat_regn_11 = 1
     feat_regn_2 = feat_regn_3 = feat_regn_4 = feat_regn_5 = feat_regn_6 = feat_regn_7 = feat_regn_8 = feat_regn_9 = feat_regn_10 = 0
 
-user_input = np.array([feat_popu, feat_area, feat_dens, feat_cost, feat_migr, 
-                        feat_mort, feat_litr, feat_phon, feat_arab, feat_crop, 
-                        feat_othr, feat_clim, feat_brth, feat_deth, feat_agrc, 
+user_input = np.array([feat_popu, feat_area, feat_dens, feat_cost, feat_migr,
+                        feat_mort, feat_litr, feat_phon, feat_arab, feat_crop,
+                        feat_othr, feat_clim, feat_brth, feat_deth, feat_agrc,
                         feat_inds, feat_serv, feat_regn_2, feat_regn_3,
-                        feat_regn_4, feat_regn_5, feat_regn_6, feat_regn_7, 
+                        feat_regn_4, feat_regn_5, feat_regn_6, feat_regn_7,
                         feat_regn_8, feat_regn_9, feat_regn_10, feat_regn_11]).reshape(1,-1)
 
 # Title
 st.title('GDP Prediciton App')
 '''
          Use this app to estimate the GDP per capita for a country.
-         
-         Use the sliders and input boxes on the left to choose the feature 
+
+         Use the sliders and input boxes on the left to choose the feature
          values and then click the **Estimate GDP** button to get a prediction
          for the GDP per capita.
 '''
@@ -197,7 +198,7 @@ st.text(" \n")
 
 # Estimate GDP on button press
 if st.button('Estimate GDP'):
-    
+
     # Make predictions
     gdp_predictions = model.predict(user_input)
     st.text(" \n")
@@ -241,5 +242,5 @@ st.write('''
           | **8** | NORTHERN AMERICA |
           | **9** | OCEANIA |
           | **10** | SUB-SAHARAN AFRICA |
-          | **11** | WESTERN EUROPE | 
+          | **11** | WESTERN EUROPE |
 ''')

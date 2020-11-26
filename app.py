@@ -1,6 +1,7 @@
 import streamlit as st
 import numpy as np
 import pickle
+from sklearn.ensemble import RandomForestRegressor
 
 st.markdown(
     """
