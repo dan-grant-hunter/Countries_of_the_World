@@ -58,11 +58,11 @@ We analysed feature importance and found that agriculture appeared to be the mos
 
 ## Model Deployment
 
-After training all of our models, I pickled the best model which used all of the features (Random Forest). I then used Streamlit to create an interactive web app which allows users to adjust the input parameters and predict GDP per capita using the trained Random Forest model. Finally, I deployed the app using Heroku.
+After training all of our models, I pickled the best model which used all of the features (Random Forest). I then used Streamlit to create an interactive web app which allows users to adjust the input parameters and predict GDP per capita using the trained Random Forest model. Finally, I deployed the app using Heroku. 
+
+[**Click here to use the app**](https://gdp-predictor-app.herokuapp.com/)
 
 ![alt text](app/gdp_prediction_app.gif "GDP per capita Predicition App")
-
-[Click here to use the app](#).
 
 ## Future Recommendations
 
