@@ -20,11 +20,13 @@ st.markdown(
 [class^="st-b"]  {
     color: white;
     font-family: monospace;
-}
-.st-bb {
-    background-color: transparent;
-    color: rgb(255 255 255);
     text-align: center;
+}
+[data-baseweb="base-input"] {
+    background-color: transparent;
+}
+.st-av {
+    background-color: transparent;
 }
 .st-at {
    background-color: #000000;
@@ -34,9 +36,6 @@ footer {
 }
 header .decoration {
     background-image: none;
-}
-.st-cs {
-    background-color: rgb(246, 51, 102);
 }
 .st-eq {
     color: white;
@@ -79,8 +78,8 @@ button.streamlit-button.xsmall-button.primary-button:hover {
     outline: none;
 }
 button.streamlit-button.small-button.primary-button:active { 
-            transform: scale(0.98);  
-            box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24); 
+    transform: scale(0.98);  
+    box-shadow: 3px 2px 22px 1px rgba(0, 0, 0, 0.24); 
 }
 .fixed-width.stText {
     font-size: 24px;
