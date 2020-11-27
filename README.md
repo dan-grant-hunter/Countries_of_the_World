@@ -2,6 +2,8 @@
 
 ## Overview 
 In this analysis, I explored a dataset consisting of 227 countries and 20 features. I explored interesting correlations, patterns and trends within the data and then built a model that was able to predict GDP per capita based upon the other features. Finally, I created an interactive web app that allows users to adjust the input parameters before estimating the GDP per capita.
+
+[**Click here to view the notebook in nbviewer**](https://nbviewer.jupyter.org/github/dan-grant-hunter/Countries_of_the_World/blob/main/countries_of_the_world.ipynb)
  
 ## Summary of Findings
 * **phones_per_1000** appeared to have a strong positive correlation with **gdp_per_capita_usd**.
